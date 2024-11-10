@@ -7,7 +7,7 @@ import loginImg from '../assets/images/login.png';
 import userIcon from '../assets/images/user.png';
 
 const Register = () => {
-  const [credentials, setCredentials] = useState({
+  const [credentials, setCredentials] = useState({ 
     userName: '',
     email: '',
     password: '',
