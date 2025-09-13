@@ -18,11 +18,13 @@ const TourDetails = () => {
   // destructure properties from tour object
   const { photo, title, desc, price, address, reviews, city, distance, maxGroupSize } = tour;
 
-  const { totalRating, avgRating } = calculateAvgRating(reviews);
-  const options = { day: "numeric", month: "long", year: "numeric" };
-
   // keep reviews in state so we can add new ones
   const [allReviews, setAllReviews] = useState(reviews || []);
+
+  // recalc rating whenever reviews change
+  const { totalRating, avgRating } = calculateAvgRating(allReviews);
+
+  const options = { day: "numeric", month: "long", year: "numeric" };
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -56,9 +58,12 @@ const TourDetails = () => {
                   <h2>{title}</h2>
                   <div className="d-flex align-items-center gap-5">
                     <span className="tour__rating d-flex align-items-center gap-1">
-                      <i className="ri-star-s-fill" style={{ color: "var(--secondary-color)" }}></i>
+                      <i
+                        className="ri-star-s-fill"
+                        style={{ color: "var(--secondary-color)" }}
+                      ></i>
                       {avgRating === 0 ? null : avgRating}
-                      {totalRating === 0 ? "Not rated" : <span>({allReviews.length})</span>}
+                      {totalRating === 0 ? " Not rated" : <span> ({allReviews.length})</span>}
                     </span>
                     <span>
                       <i className="ri-map-pin-user-fill"></i>
@@ -91,7 +96,14 @@ const TourDetails = () => {
                   <Form onSubmit={submitHandler}>
                     <div className="d-flex align-items-center gap-3 mb-4 rating__group">
                       {[1, 2, 3, 4, 5].map((num) => (
-                        <span key={num} onClick={() => setTourRating(num)}>
+                        <span
+                          key={num}
+                          onClick={() => setTourRating(num)}
+                          style={{
+                            cursor: "pointer",
+                            color: tourRating >= num ? "gold" : "gray",
+                          }}
+                        >
                           {num} <i className="ri-star-s-fill"></i>
                         </span>
                       ))}
